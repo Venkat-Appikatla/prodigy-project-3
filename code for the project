@@ -1,0 +1,71 @@
+# This Python 3 environment comes with many helpful analytics libraries installed
+# It is defined by the kaggle/python Docker image: https://github.com/kaggle/docker-python
+# For example, here's several helpful packages to load
+
+import numpy as np # linear algebra
+import pandas as pd # data processing, CSV file I/O (e.g. pd.read_csv)
+
+# Input data files are available in the read-only "../input/" directory
+# For example, running this (by clicking run or pressing Shift+Enter) will list all files under the input directory
+
+import os
+for dirname, _, filenames in os.walk('/kaggle/input'):
+    for filename in filenames:
+        print(os.path.join(dirname, filename))
+
+# You can write up to 20GB to the current directory (/kaggle/working/) that gets preserved as output when you create a version using "Save & Run All" 
+# You can also write temporary files to /kaggle/temp/, but they won't be saved outside of the current session
+
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import tensorflow as tf
+
+sample_submission=pd.read_csv("/kaggle/input/dogs-vs-cats/sampleSubmission.csv")
+
+sample_submission
+
+!ls /kaggle/input
+
+#create the target directory if it doesn't exits 
+!mkdir -p /kaggle/working/train
+
+#Unzip the train.zip file into the train directory
+!unzip /kaggle/input/dogs-vs-cats/train.zip -d /kaggle/working/train
+
+train_images
+https://www.guvi.in/courses?current_tab=paidcourse
+from sklearn.model_selection import train_test_split
+
+
+len(train_images),len(test_images),len(train_labels)
+
+#Split the data into training and testing sets 
+X_train,X_valid,y_train,y_valid=train_test_split(train_img,train_lab,test_size=0.2,random_state=1)
+
+X_train.shape,X_valid.shape,y_train.shape
+
+#Function to map label to class name
+def label_to_class_name(label):
+    return 'Dog' if label==1 else 'Cat'
+
+#Reshape the image to its original dim
+img_to_plot=train_img[2000].reshape(64,64,3)
+
+plt.figure(figsize=(10,10))
+plt.imshow(img_to_plot)
+plt.title(f"Visualise the Images:{label_to_class_name(train_lab[2000])}")
+plt.axis('off')
+plt.show()
+
+from sklearn.svm import SVC
+
+
+#Initialise SVM Classifier
+svm_classifier=SVC(kernel='linear',random_state=1)
+
+#Train
+svm_classifier.fit(X_train,y_train)
+
+#Prediction
+y_predict=svm_classifier.predict(X_valid)
